@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Word Unscramble Game</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .game-container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 2rem;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 0.95rem;
+        }
+
+        .settings {
+            margin-bottom: 30px;
+        }
+
+        .settings label {
+            display: block;
+            color: #555;
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+
+        .length-selector {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .length-btn {
+            width: 45px;
+            height: 45px;
+            border: 2px solid #667eea;
+            background: white;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #667eea;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .length-btn:hover {
+            background: #f0f0ff;
+        }
+
+        .length-btn.active {
+            background: #667eea;
+            color: white;
+        }
+
+        .scrambled-word {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #333;
+            letter-spacing: 8px;
+            margin: 30px 0;
+            min-height: 60px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .input-section {
+            margin: 20px 0;
+        }
+
+        #guess-input {
+            width: 100%;
+            padding: 15px 20px;
+            font-size: 1.3rem;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            text-align: center;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        #guess-input:focus {
+            border-color: #667eea;
+        }
+
+        #guess-input.correct {
+            border-color: #4CAF50;
+            background: #e8f5e9;
+        }
+
+        #guess-input.incorrect {
+            border-color: #f44336;
+            background: #ffebee;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 15px 20px;
+            font-size: 1rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #5a6fd6;
+        }
+
+        .btn-secondary {
+            background: #f0f0f0;
+            color: #333;
+        }
+
+        .btn-secondary:hover {
+            background: #e0e0e0;
+        }
+
+        .btn-hint {
+            background: #ff9800;
+            color: white;
+        }
+
+        .btn-hint:hover {
+            background: #f57c00;
+        }
+
+        .message {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            font-weight: 500;
+            min-height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .message.success {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .message.error {
+            background: #ffebee;
+            color: #c62828;
+        }
+
+        .message.hint {
+            background: #fff3e0;
+            color: #e65100;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: #888;
+            margin-top: 5px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @media (max-width: 480px) {
+            .game-container {
+                padding: 25px;
+            }
+
+            h1 {
+                font-size: 1.5rem;
+            }
+
+            .scrambled-word {
+                font-size: 2rem;
+                letter-spacing: 5px;
+            }
+
+            .buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <h1>Word Unscramble</h1>
+        <p class="subtitle">Unscramble the letters to find the hidden word!</p>
+
+        <div class="settings">
+            <label>Choose word length:</label>
+            <div class="length-selector">
+                <button class="length-btn" data-length="4">4</button>
+                <button class="length-btn" data-length="5">5</button>
+                <button class="length-btn active" data-length="6">6</button>
+                <button class="length-btn" data-length="7">7</button>
+                <button class="length-btn" data-length="8">8</button>
+            </div>
+        </div>
+
+        <div class="scrambled-word" id="scrambled-word">
+            Click "New Word" to start!
+        </div>
+
+        <div class="input-section">
+            <input type="text" id="guess-input" placeholder="Type your answer..." autocomplete="off" disabled>
+        </div>
+
+        <div class="buttons">
+            <button class="btn btn-primary" id="new-word-btn">New Word</button>
+            <button class="btn btn-hint" id="hint-btn" disabled>Hint</button>
+            <button class="btn btn-secondary" id="skip-btn" disabled>Skip</button>
+        </div>
+
+        <div class="message hidden" id="message"></div>
+
+        <div class="stats">
+            <div class="stat">
+                <div class="stat-value" id="score">0</div>
+                <div class="stat-label">Score</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value" id="streak">0</div>
+                <div class="stat-label">Streak</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value" id="best-streak">0</div>
+                <div class="stat-label">Best Streak</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Word lists organized by length
+        const wordsByLength = {
+            4: [
+                'book', 'tree', 'fish', 'bird', 'moon', 'star', 'rain', 'snow', 'fire', 'wind',
+                'door', 'wall', 'road', 'path', 'lake', 'hill', 'wave', 'ship', 'boat', 'kite',
+                'jump', 'walk', 'swim', 'play', 'sing', 'talk', 'read', 'cook', 'work', 'rest',
+                'blue', 'gold', 'pink', 'gray', 'dark', 'soft', 'warm', 'cool', 'fast', 'slow',
+                'home', 'love', 'hope', 'calm', 'free', 'kind', 'wise', 'bold', 'true', 'safe'
+            ],
+            5: [
+                'beach', 'cloud', 'dream', 'eagle', 'flame', 'grape', 'heart', 'ivory', 'jewel', 'knock',
+                'light', 'maple', 'night', 'ocean', 'pearl', 'queen', 'river', 'stone', 'tiger', 'unity',
+                'vocal', 'water', 'youth', 'zebra', 'apple', 'bread', 'chair', 'dance', 'earth', 'field',
+                'ghost', 'house', 'image', 'juice', 'knife', 'lemon', 'mouse', 'noble', 'orbit', 'piano',
+                'quiet', 'robot', 'smile', 'train', 'urban', 'video', 'whale', 'young', 'piano', 'storm'
+            ],
+            6: [
+                'bridge', 'castle', 'dragon', 'empire', 'forest', 'garden', 'heaven', 'island', 'jungle', 'knight',
+                'legend', 'melody', 'nature', 'orange', 'palace', 'quartz', 'rocket', 'silver', 'temple', 'unique',
+                'velvet', 'winter', 'yellow', 'zenith', 'anchor', 'branch', 'candle', 'desert', 'energy', 'flower',
+                'guitar', 'harbor', 'insect', 'jacket', 'kitten', 'laptop', 'marble', 'needle', 'oyster', 'pencil',
+                'rabbit', 'shadow', 'throne', 'valley', 'window', 'artist', 'butter', 'coffee', 'dinner', 'flower'
+            ],
+            7: [
+                'amazing', 'blanket', 'captain', 'diamond', 'elegant', 'freedom', 'gateway', 'harmony', 'imagine', 'journey',
+                'kingdom', 'lantern', 'mystery', 'network', 'octopus', 'penguin', 'quality', 'rainbow', 'sunrise', 'thunder',
+                'unicorn', 'volcano', 'whisper', 'express', 'brother', 'chapter', 'dolphin', 'element', 'fantasy', 'glacier',
+                'history', 'include', 'justice', 'kitchen', 'library', 'machine', 'natural', 'opinion', 'perfect', 'quarter',
+                'respect', 'science', 'teacher', 'uniform', 'vehicle', 'weather', 'younger', 'shelter', 'picture', 'monster'
+            ],
+            8: [
+                'absolute', 'balanced', 'calendar', 'daughter', 'elephant', 'familiar', 'generous', 'handsome', 'innocent', 'jealousy',
+                'keyboard', 'language', 'magnetic', 'national', 'obstacle', 'painting', 'question', 'remember', 'sunshine', 'treasure',
+                'umbrella', 'vacation', 'warranty', 'yourself', 'airplane', 'birthday', 'champion', 'delivery', 'enormous', 'favorite',
+                'guardian', 'hospital', 'interest', 'judgment', 'kindness', 'laughter', 'midnight', 'notebook', 'opposite', 'passport',
+                'quantity', 'research', 'sandwich', 'tomorrow', 'universe', 'velocity', 'woodland', 'youthful', 'absolute', 'boundary'
+            ]
+        };
+
+        // Game state
+        let currentWord = '';
+        let scrambledWord = '';
+        let selectedLength = 6;
+        let score = 0;
+        let streak = 0;
+        let bestStreak = 0;
+        let hintsUsed = 0;
+        let revealedLetters = [];
+
+        // DOM elements
+        const scrambledWordEl = document.getElementById('scrambled-word');
+        const guessInput = document.getElementById('guess-input');
+        const newWordBtn = document.getElementById('new-word-btn');
+        const hintBtn = document.getElementById('hint-btn');
+        const skipBtn = document.getElementById('skip-btn');
+        const messageEl = document.getElementById('message');
+        const scoreEl = document.getElementById('score');
+        const streakEl = document.getElementById('streak');
+        const bestStreakEl = document.getElementById('best-streak');
+        const lengthBtns = document.querySelectorAll('.length-btn');
+
+        // Scramble a word
+        function scrambleWord(word) {
+            let scrambled = word.split('');
+            // Keep scrambling until it's different from the original
+            let attempts = 0;
+            do {
+                for (let i = scrambled.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [scrambled[i], scrambled[j]] = [scrambled[j], scrambled[i]];
+                }
+                attempts++;
+            } while (scrambled.join('') === word && attempts < 10);
+            return scrambled.join('');
+        }
+
+        // Get a random word of the selected length
+        function getRandomWord() {
+            const words = wordsByLength[selectedLength];
+            return words[Math.floor(Math.random() * words.length)];
+        }
+
+        // Start a new game
+        function newGame() {
+            currentWord = getRandomWord();
+            scrambledWord = scrambleWord(currentWord);
+            hintsUsed = 0;
+            revealedLetters = [];
+
+            scrambledWordEl.textContent = scrambledWord.toUpperCase();
+            guessInput.value = '';
+            guessInput.disabled = false;
+            guessInput.classList.remove('correct', 'incorrect');
+            guessInput.focus();
+
+            hintBtn.disabled = false;
+            skipBtn.disabled = false;
+
+            hideMessage();
+        }
+
+        // Check the guess
+        function checkGuess() {
+            const guess = guessInput.value.toLowerCase().trim();
+
+            if (guess === '') return;
+
+            if (guess === currentWord) {
+                // Correct!
+                const points = Math.max(10 - hintsUsed * 3, 1);
+                score += points;
+                streak++;
+                if (streak > bestStreak) {
+                    bestStreak = streak;
+                }
+
+                updateStats();
+                guessInput.classList.add('correct');
+                showMessage(`Correct! +${points} points`, 'success');
+
+                guessInput.disabled = true;
+                hintBtn.disabled = true;
+                skipBtn.disabled = true;
+
+                // Auto-start new game after delay
+                setTimeout(newGame, 1500);
+            } else {
+                // Incorrect
+                guessInput.classList.add('incorrect');
+                setTimeout(() => guessInput.classList.remove('incorrect'), 500);
+                showMessage('Not quite, try again!', 'error');
+            }
+        }
+
+        // Give a hint
+        function giveHint() {
+            if (hintsUsed >= currentWord.length - 1) {
+                showMessage('No more hints available!', 'hint');
+                return;
+            }
+
+            // Find a position that hasn't been revealed yet
+            let position;
+            do {
+                position = Math.floor(Math.random() * currentWord.length);
+            } while (revealedLetters.includes(position));
+
+            revealedLetters.push(position);
+            hintsUsed++;
+
+            // Update scrambled display with hint
+            let display = scrambledWord.split('');
+            revealedLetters.forEach(pos => {
+                display[pos] = currentWord[pos];
+            });
+
+            showMessage(`Hint: Position ${position + 1} is "${currentWord[position].toUpperCase()}"`, 'hint');
+
+            if (hintsUsed >= currentWord.length - 1) {
+                hintBtn.disabled = true;
+            }
+        }
+
+        // Skip the current word
+        function skipWord() {
+            streak = 0;
+            updateStats();
+            showMessage(`The word was: ${currentWord.toUpperCase()}`, 'error');
+
+            guessInput.disabled = true;
+            hintBtn.disabled = true;
+            skipBtn.disabled = true;
+
+            setTimeout(newGame, 2000);
+        }
+
+        // Show message
+        function showMessage(text, type) {
+            messageEl.textContent = text;
+            messageEl.className = `message ${type}`;
+        }
+
+        // Hide message
+        function hideMessage() {
+            messageEl.className = 'message hidden';
+        }
+
+        // Update stats display
+        function updateStats() {
+            scoreEl.textContent = score;
+            streakEl.textContent = streak;
+            bestStreakEl.textContent = bestStreak;
+        }
+
+        // Event listeners
+        lengthBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                lengthBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                selectedLength = parseInt(btn.dataset.length);
+            });
+        });
+
+        newWordBtn.addEventListener('click', newGame);
+        hintBtn.addEventListener('click', giveHint);
+        skipBtn.addEventListener('click', skipWord);
+
+        guessInput.addEventListener('keyup', (e) => {
+            if (e.key === 'Enter') {
+                checkGuess();
+            }
+        });
+
+        guessInput.addEventListener('input', () => {
+            guessInput.classList.remove('correct', 'incorrect');
+        });
+
+        // Initialize
+        updateStats();
+    </script>
+</body>
+</html>
