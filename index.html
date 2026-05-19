@@ -13,7 +13,7 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #FF6B6B 0%, #FFE66D 50%, #4ECDC4 100%);
             min-height: 100vh;
             display: flex;
             justify-content: center;
@@ -32,7 +32,7 @@
         }
 
         h1 {
-            color: #333;
+            color: #FF6B6B;
             margin-bottom: 10px;
             font-size: 2rem;
         }
@@ -64,35 +64,37 @@
         .length-btn {
             width: 45px;
             height: 45px;
-            border: 2px solid #667eea;
+            border: 3px solid #4ECDC4;
             background: white;
-            border-radius: 10px;
+            border-radius: 50%;
             font-size: 1.1rem;
             font-weight: bold;
-            color: #667eea;
+            color: #4ECDC4;
             cursor: pointer;
             transition: all 0.2s;
         }
 
         .length-btn:hover {
-            background: #f0f0ff;
+            background: #E0FFFC;
+            transform: scale(1.1);
         }
 
         .length-btn.active {
-            background: #667eea;
+            background: #4ECDC4;
             color: white;
         }
 
         .scrambled-word {
             font-size: 2.5rem;
             font-weight: bold;
-            color: #333;
+            color: #FF6B6B;
             letter-spacing: 8px;
             margin: 30px 0;
             min-height: 60px;
             display: flex;
             justify-content: center;
             align-items: center;
+            text-shadow: 2px 2px 0px #FFE66D;
         }
 
         .input-section {
@@ -113,7 +115,7 @@
         }
 
         #guess-input:focus {
-            border-color: #667eea;
+            border-color: #4ECDC4;
         }
 
         #guess-input.correct {
@@ -144,12 +146,13 @@
         }
 
         .btn-primary {
-            background: #667eea;
+            background: #4ECDC4;
             color: white;
         }
 
         .btn-primary:hover {
-            background: #5a6fd6;
+            background: #3DBDB5;
+            transform: scale(1.05);
         }
 
         .btn-secondary {
@@ -159,15 +162,17 @@
 
         .btn-secondary:hover {
             background: #e0e0e0;
+            transform: scale(1.05);
         }
 
         .btn-hint {
-            background: #ff9800;
-            color: white;
+            background: #FFE66D;
+            color: #333;
         }
 
         .btn-hint:hover {
-            background: #f57c00;
+            background: #FFD93D;
+            transform: scale(1.05);
         }
 
         .message {
@@ -212,7 +217,7 @@
         .stat-value {
             font-size: 1.8rem;
             font-weight: bold;
-            color: #667eea;
+            color: #FF6B6B;
         }
 
         .stat-label {
@@ -294,42 +299,303 @@
     </div>
 
     <script>
-        // Word lists organized by length
+        // Word lists organized by length - kid-friendly words
         const wordsByLength = {
             4: [
-                'book', 'tree', 'fish', 'bird', 'moon', 'star', 'rain', 'snow', 'fire', 'wind',
-                'door', 'wall', 'road', 'path', 'lake', 'hill', 'wave', 'ship', 'boat', 'kite',
-                'jump', 'walk', 'swim', 'play', 'sing', 'talk', 'read', 'cook', 'work', 'rest',
-                'blue', 'gold', 'pink', 'gray', 'dark', 'soft', 'warm', 'cool', 'fast', 'slow',
-                'home', 'love', 'hope', 'calm', 'free', 'kind', 'wise', 'bold', 'true', 'safe'
+                // Animals
+                'bear', 'bird', 'crab', 'deer', 'duck', 'fish', 'frog', 'goat', 'lamb', 'lion',
+                'mice', 'mole', 'moth', 'pony', 'seal', 'slug', 'swan', 'toad', 'wasp', 'wolf',
+                'worm', 'cats', 'dogs', 'pigs', 'hens', 'ants', 'bats', 'bees', 'bugs', 'cows',
+                // Nature
+                'bush', 'cave', 'clay', 'dune', 'farm', 'hill', 'lake', 'leaf', 'moon', 'moss',
+                'nest', 'park', 'pond', 'rain', 'rock', 'sand', 'seed', 'snow', 'star', 'tree',
+                'vine', 'wave', 'wind', 'wood', 'soil', 'rose', 'stem', 'root', 'bark', 'fern',
+                // Objects
+                'ball', 'bank', 'barn', 'bath', 'bell', 'belt', 'bike', 'boat', 'book', 'boot',
+                'bowl', 'cage', 'cake', 'camp', 'card', 'cart', 'chair', 'coat', 'coin', 'comb',
+                'cone', 'cord', 'corn', 'cups', 'desk', 'dish', 'doll', 'door', 'drum', 'flag',
+                'fork', 'game', 'gate', 'gift', 'glue', 'gold', 'hall', 'hand', 'harp', 'hats',
+                'home', 'horn', 'kite', 'lamp', 'leaf', 'lock', 'maps', 'mask', 'milk', 'nail',
+                'nets', 'oven', 'pail', 'path', 'pens', 'pill', 'pins', 'pipe', 'plug', 'pole',
+                'pump', 'raft', 'rail', 'ring', 'road', 'roof', 'rope', 'rug', 'sail', 'ship',
+                'shop', 'sign', 'sink', 'sled', 'sock', 'sofa', 'step', 'tank', 'tape', 'tent',
+                'tire', 'tool', 'toys', 'tray', 'tube', 'vase', 'vest', 'wall', 'well', 'yarn',
+                // Actions
+                'bake', 'bend', 'bite', 'blow', 'bump', 'burn', 'call', 'camp', 'clap', 'cook',
+                'copy', 'dash', 'draw', 'drop', 'dump', 'dust', 'earn', 'fall', 'feed', 'fill',
+                'find', 'fish', 'flip', 'fold', 'grab', 'grow', 'help', 'hide', 'hold', 'hops',
+                'hug', 'hunt', 'jump', 'keep', 'kick', 'kiss', 'land', 'lift', 'like', 'list',
+                'lock', 'look', 'mail', 'make', 'mark', 'melt', 'miss', 'move', 'name', 'need',
+                'open', 'pack', 'pass', 'pick', 'play', 'poke', 'pull', 'push', 'race', 'read',
+                'rest', 'ride', 'ring', 'roll', 'runs', 'rush', 'save', 'send', 'shop', 'show',
+                'sing', 'skip', 'slam', 'slip', 'snap', 'sort', 'spin', 'spot', 'stay', 'step',
+                'stop', 'swim', 'talk', 'tell', 'toss', 'turn', 'wait', 'wake', 'walk', 'wash',
+                'wave', 'wipe', 'wish', 'work', 'wrap', 'yell', 'zoom', 'peek', 'pour', 'stir',
+                // Food
+                'bean', 'beef', 'beet', 'buns', 'chip', 'chop', 'clam', 'crab', 'date', 'eggs',
+                'fish', 'flan', 'food', 'fry', 'herb', 'jams', 'kale', 'kiwi', 'lamb', 'lime',
+                'loaf', 'meat', 'mint', 'nuts', 'oats', 'pear', 'peas', 'pie', 'plum', 'pork',
+                'rice', 'roll', 'salt', 'soup', 'taco', 'tart', 'yams', 'zest', 'soda', 'wrap',
+                // Colors & Descriptors
+                'blue', 'bold', 'calm', 'cool', 'cute', 'dark', 'deep', 'fair', 'fast', 'flat',
+                'free', 'glad', 'gold', 'good', 'gray', 'huge', 'kind', 'loud', 'nice', 'pink',
+                'pure', 'real', 'rich', 'ripe', 'safe', 'slow', 'soft', 'tall', 'tiny', 'true',
+                'warm', 'weak', 'wide', 'wild', 'wise', 'cozy', 'full', 'hard', 'high', 'long'
             ],
             5: [
-                'beach', 'cloud', 'dream', 'eagle', 'flame', 'grape', 'heart', 'ivory', 'jewel', 'knock',
-                'light', 'maple', 'night', 'ocean', 'pearl', 'queen', 'river', 'stone', 'tiger', 'unity',
-                'vocal', 'water', 'youth', 'zebra', 'apple', 'bread', 'chair', 'dance', 'earth', 'field',
-                'ghost', 'house', 'image', 'juice', 'knife', 'lemon', 'mouse', 'noble', 'orbit', 'piano',
-                'quiet', 'robot', 'smile', 'train', 'urban', 'video', 'whale', 'young', 'piano', 'storm'
+                // Animals
+                'bunny', 'camel', 'chick', 'chimp', 'clown', 'coral', 'crane', 'eagle', 'finch', 'gecko',
+                'goose', 'hippo', 'horse', 'hound', 'hyena', 'koala', 'lemur', 'llama', 'moose', 'mouse',
+                'otter', 'panda', 'puppy', 'robin', 'shark', 'sheep', 'skunk', 'sloth', 'snail', 'snake',
+                'squid', 'stork', 'tiger', 'trout', 'whale', 'zebra', 'kitty', 'ducks', 'bears', 'lions',
+                // Nature
+                'beach', 'bloom', 'cliff', 'cloud', 'coast', 'coral', 'creek', 'daisy', 'earth', 'field',
+                'flame', 'flood', 'frost', 'grass', 'grove', 'maple', 'marsh', 'ocean', 'petal', 'plant',
+                'river', 'roots', 'shore', 'shrub', 'slope', 'smoke', 'space', 'spray', 'steam', 'stone',
+                'storm', 'swamp', 'thorn', 'tower', 'trail', 'trunk', 'tulip', 'water', 'woods', 'world',
+                // Objects
+                'alarm', 'album', 'apron', 'badge', 'bench', 'block', 'broom', 'brush', 'cabin', 'canoe',
+                'chalk', 'chart', 'chest', 'clock', 'cloth', 'coach', 'couch', 'crown', 'diary', 'doors',
+                'drain', 'dress', 'drill', 'drums', 'fence', 'flask', 'floor', 'frame', 'games', 'globe',
+                'glove', 'goggles', 'grape', 'guard', 'heart', 'house', 'jewel', 'label', 'lemon', 'light',
+                'medal', 'melon', 'money', 'mop', 'music', 'paint', 'paper', 'paste', 'peach', 'pearl',
+                'penny', 'phone', 'piano', 'pizza', 'plane', 'plant', 'plate', 'prize', 'purse', 'quilt',
+                'radio', 'racer', 'ruler', 'scale', 'scarf', 'seeds', 'shelf', 'shell', 'shirt', 'shoes',
+                'spade', 'spoon', 'stage', 'stamp', 'stick', 'stool', 'stove', 'story', 'strap', 'straw',
+                'swing', 'table', 'teeth', 'towel', 'track', 'train', 'trike', 'truck', 'video', 'wagon',
+                'watch', 'wheel', 'yacht', 'candy', 'chair', 'boxes', 'cards', 'books', 'dolls', 'bikes',
+                // Actions
+                'blink', 'build', 'carry', 'catch', 'chase', 'cheer', 'clean', 'clear', 'climb', 'close',
+                'count', 'cover', 'craft', 'crawl', 'cross', 'dance', 'dream', 'drink', 'drive', 'erase',
+                'fetch', 'float', 'giggle', 'glide', 'greet', 'grill', 'guess', 'guide', 'hatch', 'learn',
+                'march', 'match', 'paint', 'paste', 'pedal', 'plant', 'point', 'print', 'prove', 'reach',
+                'relax', 'rinse', 'roast', 'scoop', 'share', 'shout', 'skate', 'sleep', 'slide', 'smile',
+                'sniff', 'spell', 'spill', 'splash', 'spray', 'stack', 'stare', 'start', 'steer', 'stomp',
+                'study', 'sweep', 'taste', 'teach', 'thank', 'think', 'throw', 'touch', 'trace', 'trade',
+                'twist', 'unite', 'visit', 'water', 'weave', 'write', 'laugh', 'claps', 'jumps', 'swims',
+                // Food
+                'apple', 'bacon', 'bagel', 'berry', 'bread', 'candy', 'cheese', 'chips', 'cocoa', 'cream',
+                'donut', 'flour', 'fruit', 'fudge', 'grape', 'gravy', 'honey', 'jelly', 'juice', 'lemon',
+                'lunch', 'mango', 'maple', 'melon', 'olive', 'onion', 'pasta', 'peach', 'pizza', 'salad',
+                'sauce', 'snack', 'spice', 'steak', 'sugar', 'syrup', 'toast', 'treat', 'wafer', 'wheat',
+                // Descriptors
+                'brave', 'bright', 'bumpy', 'bushy', 'chilly', 'clean', 'clear', 'cloudy', 'cozy', 'curly',
+                'dizzy', 'dusty', 'early', 'empty', 'fancy', 'fresh', 'funny', 'fuzzy', 'giant', 'goofy',
+                'grand', 'great', 'green', 'happy', 'heavy', 'itchy', 'jolly', 'jumpy', 'light', 'lucky',
+                'messy', 'muddy', 'noisy', 'plain', 'pretty', 'proud', 'quiet', 'rainy', 'round', 'rusty',
+                'sandy', 'shiny', 'silly', 'sleek', 'small', 'smart', 'smoky', 'snowy', 'soggy', 'solid',
+                'sorry', 'spicy', 'stiff', 'stinky', 'stormy', 'sunny', 'super', 'sweet', 'swift', 'thick',
+                'tired', 'tough', 'wavy', 'windy', 'wispy', 'young', 'yummy', 'zippy', 'short', 'fluffy'
             ],
             6: [
-                'bridge', 'castle', 'dragon', 'empire', 'forest', 'garden', 'heaven', 'island', 'jungle', 'knight',
-                'legend', 'melody', 'nature', 'orange', 'palace', 'quartz', 'rocket', 'silver', 'temple', 'unique',
-                'velvet', 'winter', 'yellow', 'zenith', 'anchor', 'branch', 'candle', 'desert', 'energy', 'flower',
-                'guitar', 'harbor', 'insect', 'jacket', 'kitten', 'laptop', 'marble', 'needle', 'oyster', 'pencil',
-                'rabbit', 'shadow', 'throne', 'valley', 'window', 'artist', 'butter', 'coffee', 'dinner', 'flower'
+                // Animals
+                'badger', 'beagle', 'beaver', 'beetle', 'bobcat', 'canary', 'cheetah', 'cougar', 'coyote', 'donkey',
+                'dragon', 'falcon', 'ferret', 'gerbil', 'gopher', 'hornet', 'iguana', 'insect', 'jaguar', 'kitten',
+                'lizard', 'magpie', 'marmot', 'monkey', 'ocelot', 'osprey', 'oyster', 'parrot', 'pigeon', 'possum',
+                'rabbit', 'racoon', 'salmon', 'spider', 'turkey', 'turtle', 'walrus', 'weasel', 'horses', 'pandas',
+                // Nature
+                'breeze', 'bridge', 'canyon', 'cavern', 'desert', 'flower', 'forest', 'garden', 'geyser', 'harbor',
+                'island', 'jungle', 'lagoon', 'meadow', 'nature', 'oasis', 'pebble', 'planet', 'puddle', 'rapids',
+                'ravine', 'ripple', 'shadow', 'stream', 'summit', 'sunset', 'thicket', 'tundra', 'valley', 'violet',
+                'willow', 'winter', 'autumn', 'branch', 'cactus', 'clover', 'fungus', 'sprout', 'garden', 'spring',
+                // Objects
+                'anchor', 'basket', 'beacon', 'blanket', 'bottle', 'bucket', 'button', 'camera', 'candle', 'carpet',
+                'castle', 'closet', 'collar', 'cookie', 'crayon', 'device', 'drawer', 'eraser', 'faucet', 'folder',
+                'garage', 'goggles', 'guitar', 'hammer', 'helmet', 'jacket', 'jersey', 'jigsaw', 'ladder', 'laptop',
+                'locker', 'magnet', 'marker', 'mirror', 'mitten', 'muffin', 'museum', 'napkin', 'needle', 'nozzle',
+                'paddle', 'pencil', 'pillow', 'pirate', 'pliers', 'pocket', 'poster', 'puzzle', 'racket', 'ribbon',
+                'rocket', 'saddle', 'sandal', 'school', 'shield', 'shovel', 'signal', 'silver', 'slipper', 'socket',
+                'spider', 'sponge', 'staple', 'statue', 'sticker', 'string', 'switch', 'tablet', 'target', 'teapot',
+                'thread', 'throne', 'tissue', 'tomato', 'trophy', 'tunnel', 'turret', 'wallet', 'window', 'zipper',
+                // Actions
+                'admire', 'assist', 'bounce', 'browse', 'cancel', 'charge', 'choose', 'clench', 'cooked', 'create',
+                'cuddle', 'decide', 'defend', 'delete', 'design', 'detect', 'divide', 'donate', 'double', 'doodle',
+                'escape', 'excite', 'excuse', 'expand', 'expect', 'export', 'extend', 'figure', 'finish', 'follow',
+                'forgive', 'freeze', 'gather', 'giggle', 'gobble', 'handle', 'happen', 'hobble', 'hustle', 'ignore',
+                'import', 'invent', 'invite', 'juggle', 'jiggle', 'launch', 'leader', 'listen', 'locate', 'manage',
+                'mingle', 'mumble', 'nibble', 'notice', 'obtain', 'paddle', 'patter', 'peddle', 'ponder', 'prefer',
+                'puzzle', 'racing', 'rattle', 'recall', 'recite', 'record', 'repair', 'repeat', 'report', 'rescue',
+                'resume', 'return', 'rotate', 'rubble', 'rustle', 'sample', 'search', 'settle', 'sizzle', 'snuggle',
+                'splash', 'sprint', 'squish', 'stroll', 'supply', 'switch', 'tickle', 'topple', 'travel', 'tumble',
+                'untie', 'update', 'waddle', 'wiggle', 'wobble', 'wonder', 'yawned', 'zigged', 'zoomed', 'jumped',
+                // Food
+                'almond', 'banana', 'batter', 'biscuit', 'brownie', 'butter', 'carrot', 'celery', 'cereal', 'cherry',
+                'cookie', 'cracker', 'cupcake', 'dinner', 'ginger', 'grapes', 'hotdog', 'lollipop', 'muffin', 'noodle',
+                'orange', 'pastry', 'peanut', 'pepper', 'pickle', 'potato', 'pretzel', 'pumpkin', 'radish', 'raisin',
+                'salami', 'sundae', 'tomato', 'turkey', 'waffle', 'walnut', 'yogurt', 'cheese', 'snacks', 'treats',
+                // Descriptors
+                'active', 'bouncy', 'bubbly', 'cheery', 'chunky', 'clumsy', 'cloudy', 'comfy', 'crunchy', 'cuddly',
+                'dainty', 'dapper', 'droopy', 'floppy', 'fluffy', 'frilly', 'gentle', 'gloomy', 'glossy', 'grumpy',
+                'humble', 'hungry', 'joyful', 'lively', 'lonely', 'lovely', 'mighty', 'modern', 'narrow', 'orange',
+                'peaceful', 'peppy', 'perky', 'playful', 'polite', 'pretty', 'purple', 'puffy', 'quirky', 'radiant',
+                'scenic', 'secret', 'shaggy', 'simple', 'skinny', 'sleepy', 'smooth', 'snazzy', 'snoopy', 'sparkly',
+                'speedy', 'spikey', 'sporty', 'spotty', 'square', 'sticky', 'stormy', 'stripy', 'strong', 'stuffy',
+                'sunny', 'tender', 'tricky', 'twisty', 'upbeat', 'useful', 'velvet', 'wacky', 'watery', 'yellow'
             ],
             7: [
-                'amazing', 'blanket', 'captain', 'diamond', 'elegant', 'freedom', 'gateway', 'harmony', 'imagine', 'journey',
-                'kingdom', 'lantern', 'mystery', 'network', 'octopus', 'penguin', 'quality', 'rainbow', 'sunrise', 'thunder',
-                'unicorn', 'volcano', 'whisper', 'express', 'brother', 'chapter', 'dolphin', 'element', 'fantasy', 'glacier',
-                'history', 'include', 'justice', 'kitchen', 'library', 'machine', 'natural', 'opinion', 'perfect', 'quarter',
-                'respect', 'science', 'teacher', 'uniform', 'vehicle', 'weather', 'younger', 'shelter', 'picture', 'monster'
+                // Animals
+                'antelope', 'buffalo', 'catfish', 'cheetah', 'chicken', 'cricket', 'dolphin', 'echidna', 'firefly', 'giraffe',
+                'gorilla', 'hamster', 'herring', 'ladybug', 'lobster', 'mackerel', 'manatee', 'meerkat', 'mollusk', 'monitor',
+                'mustang', 'narwhal', 'octopus', 'ostrich', 'panther', 'peacock', 'pelican', 'penguin', 'piranha', 'platypus',
+                'pollock', 'porcupine', 'raccoon', 'rattler', 'rooster', 'sardine', 'seagull', 'sunfish', 'tadpole', 'termite',
+                'unicorn', 'vulture', 'wallaby', 'warthog', 'wildcat', 'puppies', 'kittens', 'bunnies', 'turtles', 'dragons',
+                // Nature
+                'asteroid', 'blossom', 'boulder', 'climate', 'cypress', 'drought', 'emerald', 'erosion', 'evergreen', 'foliage',
+                'glacier', 'habitat', 'harvest', 'horizon', 'iceberg', 'kingdom', 'orchard', 'pasture', 'prairie', 'rainbow',
+                'redwood', 'sapphire', 'savanna', 'sunlight', 'sunrise', 'thunder', 'tornado', 'tropics', 'tsunami', 'volcano',
+                'weather', 'wetland', 'wildfire', 'blossom', 'crystal', 'feather', 'seaside', 'shelter', 'thicket', 'pathway',
+                // Objects
+                'airplane', 'aquarium', 'backpack', 'balance', 'balloon', 'bandage', 'blanket', 'booklet', 'bracelet', 'cabinet',
+                'calendar', 'campfire', 'captain', 'carriage', 'cartoon', 'catapult', 'charger', 'chimney', 'compass', 'costume',
+                'curtain', 'diamond', 'doorbell', 'earring', 'eraser', 'exhaust', 'factory', 'feather', 'flashlight', 'flipper',
+                'furnace', 'gadget', 'glasses', 'gondola', 'gumball', 'hammock', 'handbag', 'handout', 'highway', 'hopscotch',
+                'journal', 'kitchen', 'lantern', 'library', 'machine', 'mailbox', 'marquee', 'massage', 'mattress', 'microbe',
+                'monster', 'mystery', 'necklace', 'network', 'package', 'parachute', 'pattern', 'perfume', 'picture', 'pinball',
+                'pitcher', 'platform', 'playpen', 'popcorn', 'pretzel', 'printer', 'propeller', 'protect', 'pumpkin', 'pyramid',
+                'racecar', 'receipt', 'sandbox', 'satchel', 'scooter', 'shelter', 'slumber', 'snowman', 'spinner', 'stadium',
+                'sticker', 'suitcase', 'sweater', 'teacher', 'toolkit', 'toaster', 'tractor', 'trailer', 'trumpet', 'uniform',
+                'vehicle', 'whistle', 'windmill', 'wrapper', 'stickers', 'puzzles', 'mittens', 'pillows', 'rockets', 'bubbles',
+                // Actions
+                'admired', 'ambling', 'balancing', 'believe', 'bounced', 'brewing', 'capture', 'carried', 'celebrate', 'chasing',
+                'cheered', 'clapped', 'clatter', 'cleaned', 'climbed', 'coached', 'compare', 'compete', 'cooking', 'counted',
+                'covered', 'crashed', 'created', 'crossed', 'dancing', 'decided', 'deliver', 'develop', 'discover', 'doodled',
+                'drawing', 'dreamed', 'drifted', 'escaped', 'examine', 'excited', 'explore', 'express', 'falling', 'fetched',
+                'flipped', 'flutter', 'focused', 'forgave', 'grabbed', 'growing', 'hammered', 'handled', 'helping', 'hopping',
+                'hugging', 'imagine', 'improve', 'include', 'invited', 'jogging', 'juggled', 'jumping', 'keeping', 'kicking',
+                'laughed', 'leading', 'leaping', 'learned', 'lifting', 'located', 'managed', 'marched', 'measure', 'melting',
+                'noticed', 'observe', 'offered', 'opening', 'operate', 'painted', 'passing', 'perform', 'picture', 'planted',
+                'playing', 'pointed', 'prepare', 'printed', 'protect', 'provide', 'pulling', 'pushing', 'puzzled', 'reached',
+                'reading', 'receive', 'relaxed', 'rescued', 'respond', 'rolling', 'running', 'sailing', 'sharing', 'showing',
+                'sitting', 'skating', 'skipped', 'slipped', 'smiling', 'snapped', 'sorting', 'spellingspent', 'spinning', 'spotted',
+                'started', 'stepped', 'stopped', 'studied', 'succeed', 'support', 'surfing', 'swaying', 'talking', 'tasting',
+                'teacher', 'telling', 'testing', 'thanked', 'thought', 'touched', 'trading', 'trained', 'trapped', 'treated',
+                'tripped', 'trusted', 'turning', 'twisted', 'visited', 'walking', 'wishing', 'working', 'writing', 'yelling',
+                // Food
+                'alfalfa', 'avocado', 'biscuit', 'blender', 'broccoli', 'brownie', 'burrito', 'cabbage', 'cashew', 'chicken',
+                'chimichurri', 'coconut', 'coleslawcookie', 'cracker', 'custard', 'dessert', 'eggroll', 'granola', 'grapefruit',
+                'hazelnut', 'lasagna', 'lettuce', 'macaroni', 'meatball', 'mustard', 'nachos', 'oatmeal', 'pancake', 'parfait',
+                'parsley', 'popcorn', 'pretzel', 'pudding', 'pumpkin', 'ravioli', 'sausage', 'spinach', 'tostada', 'vanilla',
+                // Descriptors
+                'amazing', 'awesome', 'bashful', 'blazing', 'bouncy', 'bubbly', 'careful', 'cheerful', 'chubby', 'classic',
+                'colorful', 'cowardly', 'creative', 'curious', 'dazzling', 'delicate', 'dreamy', 'elegant', 'endless', 'excited',
+                'fabulous', 'fearless', 'festive', 'flowery', 'forever', 'fragile', 'frantic', 'friendly', 'frosty', 'gentle',
+                'giggly', 'gleeful', 'glittery', 'glowing', 'grouchy', 'helpful', 'hopeful', 'joyful', 'kindest', 'magical',
+                'majestic', 'massive', 'musical', 'natural', 'nervous', 'obvious', 'patient', 'peaceful', 'perfect', 'playful',
+                'puzzled', 'radiant', 'relaxed', 'selfish', 'serious', 'shining', 'shocked', 'sincere', 'skilled', 'sparkly',
+                'special', 'spotted', 'strange', 'stylish', 'supreme', 'talented', 'thankful', 'ticklish', 'timid', 'tricky',
+                'vibrant', 'wacky', 'worried', 'youthful', 'zealous', 'zippy', 'snuggly', 'bubbly', 'cuddly', 'giggly'
             ],
             8: [
-                'absolute', 'balanced', 'calendar', 'daughter', 'elephant', 'familiar', 'generous', 'handsome', 'innocent', 'jealousy',
-                'keyboard', 'language', 'magnetic', 'national', 'obstacle', 'painting', 'question', 'remember', 'sunshine', 'treasure',
-                'umbrella', 'vacation', 'warranty', 'yourself', 'airplane', 'birthday', 'champion', 'delivery', 'enormous', 'favorite',
-                'guardian', 'hospital', 'interest', 'judgment', 'kindness', 'laughter', 'midnight', 'notebook', 'opposite', 'passport',
-                'quantity', 'research', 'sandwich', 'tomorrow', 'universe', 'velocity', 'woodland', 'youthful', 'absolute', 'boundary'
+                // Animals
+                'aardvark', 'alligator', 'anteater', 'antelope', 'armadillo', 'baboon', 'barnacle', 'bullfrog', 'butterfly', 'cardinal',
+                'chipmunk', 'cockatoo', 'crayfish', 'dinosaur', 'dragonfly', 'duckling', 'elephant', 'flamingo', 'goldfish', 'gorillas',
+                'hedgehog', 'honeybee', 'hummingbird', 'kangaroo', 'kingfish', 'ladybird', 'mackerel', 'mongoose', 'mosquito', 'opossum',
+                'parakeet', 'pheasant', 'platypus', 'porpoise', 'reindeer', 'scorpion', 'seahorse', 'squirrel', 'starfish', 'stingray',
+                'tarantula', 'tortoise', 'tropical', 'umbrella', 'woodchuck', 'woodpecker', 'dolphins', 'penguins', 'parrots', 'puppies',
+                // Nature
+                'altitude', 'blizzard', 'blossoms', 'calendar', 'carnival', 'cavern', 'clearing', 'confetti', 'creature', 'daffodil',
+                'daylight', 'deciduous', 'downpour', 'driftwood', 'dusk', 'earthling', 'eastward', 'evergreen', 'fern', 'fireflies',
+                'flourish', 'foothill', 'forecast', 'fossils', 'fountain', 'frostbite', 'hillside', 'homeland', 'icecream', 'lakeside',
+                'landmark', 'lavender', 'lifeboat', 'lilypad', 'magnolia', 'mainland', 'marshland', 'marigold', 'midnight', 'moonbeam',
+                'moonlight', 'mountain', 'mushroom', 'northern', 'outdoors', 'overlook', 'rainbows', 'raindrop', 'riverbed', 'rosebush',
+                'sandbank', 'seascape', 'seashore', 'seaweed', 'seedling', 'snowball', 'snowfall', 'snowflake', 'southern', 'spectrum',
+                'stardust', 'starfish', 'stargazer', 'sunbeams', 'sunflower', 'sunlight', 'sunshine', 'tidepools', 'treehood', 'twilight',
+                'waterfall', 'westward', 'wildfire', 'wildlife', 'woodland', 'rainforest', 'sunshine', 'treasure', 'peaceful', 'crystals',
+                // Objects
+                'airplane', 'alphabet', 'backpack', 'balcony', 'bandanna', 'baseball', 'basement', 'bathroom', 'binoculars', 'birthday',
+                'blankets', 'bookmark', 'bookshelf', 'bracelet', 'briefcase', 'brochure', 'building', 'bulletin', 'calendar', 'campfire',
+                'carousel', 'catapult', 'checkers', 'chessboard', 'chimney', 'cinnamon', 'clarinet', 'classroom', 'coloring', 'computer',
+                'corridor', 'cupboard', 'curtains', 'doorbell', 'doorknob', 'doorstep', 'driveway', 'drumstick', 'dumpster', 'earphone',
+                'elevator', 'envelope', 'escalator', 'exercise', 'eyeglass', 'farmland', 'fastener', 'fireplace', 'firework', 'fishbowl',
+                'flashcard', 'flipbook', 'football', 'footstool', 'forklift', 'fountain', 'frisbee', 'gadgetry', 'gearshift', 'goldmine',
+                'goodness', 'graphics', 'gumdrops', 'hairband', 'hallway', 'handbook', 'headband', 'headphone', 'homework', 'hopscotch',
+                'hospital', 'hotplate', 'hourglass', 'household', 'icecream', 'internet', 'jokebook', 'jukebox', 'keyboard', 'kickball',
+                'kindness', 'knapsack', 'lamppost', 'laughter', 'lemonade', 'lifeboat', 'lifeguard', 'lightbulb', 'lollipop', 'lunchbox',
+                'magazine', 'mailroom', 'megaphone', 'microwave', 'milkshake', 'mountain', 'necklace', 'neighbor', 'nightgown', 'notebook',
+                'ornament', 'outdoors', 'painting', 'parachute', 'passport', 'patchwork', 'paycheck', 'peaceful', 'peanuts', 'pedestal',
+                'pendulum', 'perfume', 'photobook', 'pinwheel', 'pipeline', 'platform', 'playroom', 'playlist', 'plunger', 'popsicle',
+                'postcard', 'potatoes', 'princess', 'printout', 'prisoner', 'property', 'pumpkins', 'pushcart', 'radiator', 'railroad',
+                'raincoat', 'recliner', 'recorder', 'recycles', 'reminder', 'reporter', 'research', 'restroom', 'rickshaw', 'roadside',
+                'rollerblade', 'rooftop', 'sailboat', 'sandwich', 'saucepan', 'scissors', 'scooters', 'scrapbook', 'seashell', 'showcase',
+                'sidewalk', 'signpost', 'sinkhole', 'skyscraper', 'sled', 'sleepover', 'slippers', 'slowpoke', 'snapshot', 'snowboard',
+                'snowplow', 'softball', 'spaceman', 'spaceship', 'sparklers', 'spectacle', 'speeding', 'spirited', 'spoonful', 'sprinkle',
+                'stairway', 'standard', 'stingray', 'stopwatch', 'storybook', 'strawberry', 'strength', 'suitcase', 'sunblock', 'sunglasses',
+                'sunshine', 'superman', 'surprise', 'sweaters', 'swimming', 'swimsuit', 'symphony', 'tabletop', 'teamwork', 'teaspoon',
+                'teenager', 'telephone', 'textbook', 'thankful', 'thinking', 'timeline', 'toddlers', 'tomorrow', 'toolbox', 'toothpaste',
+                'tracksuit', 'treadmill', 'treasure', 'treehouse', 'triangle', 'tricycle', 'triggers', 'trimming', 'trolleys', 'trombone',
+                'tropical', 'troubles', 'trucking', 'trumpets', 'umbrella', 'underdog', 'underway', 'unicorns', 'universe', 'unlocked',
+                'vacation', 'valuable', 'vegetable', 'vitamins', 'volleyed', 'walkways', 'wardrobe', 'washroom', 'watchful', 'waterfalls',
+                'watergun', 'weekdays', 'wellness', 'whistles', 'windmill', 'windpipe', 'wireless', 'workshop', 'wristband', 'yearbook',
+                // Actions
+                'absorbed', 'achieved', 'acquired', 'advanced', 'balanced', 'believed', 'borrowed', 'captured', 'celebrate', 'cheerful',
+                'climbing', 'coaching', 'coloring', 'combined', 'compared', 'competed', 'complete', 'composed', 'computed', 'conclude',
+                'confetti', 'confused', 'conquers', 'consider', 'contains', 'continue', 'convince', 'cooperate', 'creating', 'decorate',
+                'defended', 'delicate', 'delivered', 'demanded', 'departed', 'describe', 'designed', 'detected', 'developed', 'directed',
+                'discover', 'disguise', 'dispatch', 'displayed', 'disposed', 'distance', 'distract', 'disturbed', 'dominate', 'drawings',
+                'dreaming', 'dressing', 'drifting', 'drinking', 'employed', 'enjoying', 'enlarged', 'entertain', 'entrance', 'equipped',
+                'escaping', 'estimate', 'evaluate', 'examined', 'examples', 'exchange', 'exciting', 'exercise', 'expanded', 'expected',
+                'expedite', 'expenses', 'expertly', 'explains', 'explored', 'exported', 'extended', 'fabulous', 'faltered', 'fastened',
+                'featured', 'finished', 'flapping', 'flashbulb', 'flipping', 'floating', 'flourish', 'followed', 'forgiving', 'founding',
+                'friendly', 'fulfilled', 'fumbling', 'gallopedgathered', 'generate', 'giggling', 'governed', 'grabbing', 'graceful',
+                'graduate', 'grateful', 'greeted', 'grinding', 'gripping', 'grounded', 'grouping', 'guarding', 'guidance', 'handling',
+                'happened', 'helpless', 'hesitate', 'hoisting', 'hollered', 'homework', 'honestly', 'hopscotch', 'huddling', 'huggable',
+                'humbling', 'hustling', 'identify', 'igniting', 'imagined', 'imitated', 'impacted', 'impolite', 'imported', 'improved',
+                'included', 'increase', 'indicate', 'informed', 'initiate', 'innovate', 'inquired', 'inserted', 'inspects', 'inspired',
+                'installs', 'instruct', 'interact', 'interest', 'invented', 'invested', 'involved', 'jamboree', 'jigsawed', 'jokingly',
+                'journeys', 'juggling', 'jumpingkindness', 'knitting', 'knockout', 'labeling', 'ladybug', 'launched', 'laughter',
+                'layering', 'learning', 'lectured', 'liberating', 'licensed', 'lighting', 'limiting', 'listened', 'location', 'marathon',
+                'measured', 'memories', 'mentored', 'migrated', 'minimize', 'misplace', 'moderate', 'modified', 'monitors', 'movement',
+                'multiply', 'narrator', 'navigate', 'nibbling', 'nominate', 'noticing', 'numbered', 'obedient', 'observed', 'obtained',
+                'occupied', 'offering', 'operated', 'opinions', 'opposing', 'optional', 'ordering', 'organize', 'ornament', 'outdoors',
+                'outgoing', 'outlined', 'overcome', 'paddling', 'painting', 'pampered', 'panicked', 'parading', 'parented', 'partnered',
+                'patience', 'pattered', 'pedaling', 'perceive', 'perfects', 'performs', 'perished', 'personal', 'persuade', 'pickled',
+                'pictured', 'piloting', 'pinching', 'planning', 'planting', 'playtime', 'pleasant', 'pleasing', 'plotting', 'pointing',
+                'polished', 'pondered', 'popcorns', 'populate', 'position', 'possible', 'postpone', 'pouring', 'powering', 'practice',
+                'praising', 'preceded', 'predicts', 'prepared', 'presents', 'preserve', 'presided', 'pressing', 'pretends', 'prevents',
+                'printing', 'proceeds', 'produced', 'programs', 'progress', 'projects', 'promised', 'promotes', 'prompted', 'properly',
+                'proposed', 'prospect', 'protects', 'provided', 'purchase', 'pursuing', 'puzzling', 'qualifies', 'question', 'quilting',
+                'quizzing', 'radiates', 'rainbows', 'rallying', 'rattling', 'reaching', 'reacting', 'readings', 'realized', 'rearrange',
+                'reasoned', 'reassure', 'reboundarecalled', 'received', 'reciting', 'reckoned', 'reclined', 'recorded', 'recovers',
+                'recreate', 'recycled', 'redesign', 'redirect', 'reducing', 'referred', 'reflects', 'reformed', 'regained', 'register',
+                'regulate', 'rehearse', 'rejected', 'rejoiced', 'relating', 'relaxing', 'released', 'reliable', 'relieved', 'remained',
+                'remember', 'reminded', 'removing', 'rendered', 'renewing', 'repeated', 'replaced', 'replayed', 'reported', 'requests',
+                'required', 'research', 'reserved', 'residing', 'resolved', 'resource', 'response', 'restored', 'restrict', 'resulted',
+                'retained', 'retiring', 'retrieve', 'returned', 'revealed', 'reversed', 'reviewed', 'revisited', 'rewarded', 'rewriter',
+                'riddling', 'rippling', 'rollback', 'rotating', 'rumbling', 'saddling', 'sampling', 'savoring', 'scanning', 'scatters',
+                'schedule', 'scooping', 'scooting', 'scorched', 'scramble', 'screened', 'scripted', 'scrolled', 'searched', 'seasoned',
+                'selected', 'settling', 'shacking', 'sharpens', 'shatters', 'shielded', 'shifting', 'shimmied', 'shipping', 'shopping',
+                'shortage', 'shoulder', 'showered', 'shuffled', 'sideways', 'sighting', 'signaled', 'silently', 'simplify', 'simulate',
+                'sinceresketched', 'skidding', 'skillful', 'skipping', 'sleeping', 'slinging', 'slipping', 'slowdown', 'smallest',
+                'smashing', 'smoothed', 'snapping', 'sneaking', 'sniffing', 'snipping', 'snorkels', 'snowball', 'snuggled', 'softened',
+                'soldiers', 'solution', 'somebody', 'somersault', 'soothing', 'sparking', 'sparkles', 'speaking', 'specials', 'specific',
+                'spectrum', 'speedway', 'spelling', 'spending', 'spinning', 'splashed', 'splendid', 'splinter', 'sporting', 'spotless',
+                'spotting', 'sprinted', 'sprinkle', 'sprouted', 'spurring', 'squashed', 'squeezes', 'stabbing', 'stacking', 'staffing',
+                'staining', 'stalking', 'stamping', 'standing', 'starfish', 'stargaze', 'starling', 'starting', 'starving', 'statutes',
+                'steadied', 'stealing', 'steering', 'stepping', 'stickers', 'stinging', 'stinking', 'stirring', 'stocking', 'stomping',
+                'stopping', 'storming', 'strained', 'stranded', 'stranger', 'strategy', 'straying', 'streamed', 'strength', 'stressed',
+                'stretchy', 'striding', 'striking', 'striving', 'strolled', 'stronger', 'struggle', 'stubbing', 'stubborn', 'studious',
+                'studying', 'stuffing', 'stunning', 'subjects', 'submitted', 'succeeds', 'suffered', 'suggests', 'suitable', 'suitcase',
+                'summoned', 'sunshine', 'supports', 'supposed', 'suppress', 'surfaced', 'surfings', 'surgeons', 'surround', 'surveyed',
+                'survival', 'survived', 'suspects', 'suspends', 'swapping', 'swarming', 'sweating', 'sweeping', 'swelling', 'swimming',
+                'swinging', 'switched', 'swooping', 'sympathy', 'symptoms', 'tackling', 'tailored', 'talented', 'tapering', 'targeted',
+                'teaching', 'teamwork', 'teaspoon', 'teenager', 'tempting', 'tendency', 'thanking', 'thankful', 'thickens', 'thinking',
+                'thirsted', 'thorough', 'thoughts', 'threaded', 'thrilledthriving', 'throwing', 'thwarted', 'tickling', 'tightens',
+                'timeline', 'tiptoeing', 'together', 'tolerant', 'tomorrow', 'touching', 'toughened', 'tracking', 'trailing', 'training',
+                'trampled', 'transfer', 'transmit', 'trapping', 'traveled', 'treasure', 'treating', 'trembled', 'trending', 'triangle',
+                'trickled', 'triggers', 'trimming', 'tripling', 'triumphs', 'tropical', 'trotting', 'troubled', 'trucking', 'trusting',
+                'tumbling', 'turbines', 'tutorial', 'twinkling', 'twirling', 'twisting', 'umbrella', 'umpiring', 'unafraid', 'unbelted',
+                'unbuckle', 'unbutton', 'uncapped', 'uncovers', 'underdog', 'underway', 'undoable', 'unfolded', 'unfrozen', 'unifying',
+                'uniquely', 'universe', 'unlocked', 'unloving', 'unpacked', 'unpinned', 'unsealed', 'unsigned', 'untangle', 'untitled',
+                'upcoming', 'updating', 'upgraded', 'uplifted', 'uploaded', 'uprooted', 'upscaled', 'upstream', 'vacation', 'validate',
+                'valuable', 'vanished', 'vehicles', 'ventured', 'verified', 'versions', 'victored', 'vignette', 'violated', 'visiting',
+                'vitamins', 'voicings', 'volleyed', 'voluming', 'vouchers', 'wadding', 'waffling', 'wagering', 'wagtails', 'wakening',
+                'walkways', 'wandered', 'warbling', 'wardrobe', 'warnings', 'warrants', 'watching', 'watering', 'wavering', 'weakened',
+                'weaponry', 'weathers', 'weighing', 'welcomed', 'wellness', 'westward', 'whacking', 'whatever', 'wheeling', 'whenever',
+                'wherever', 'whipping', 'whirling', 'whisking', 'whispers', 'whistled', 'widening', 'wiggling', 'wildlife', 'willowed',
+                'windiest', 'windmill', 'windowed', 'winnings', 'wintered', 'wireless', 'wisest', 'wishing', 'withdrew', 'withered',
+                'withheld', 'wizardly', 'wobbling', 'wondered', 'woodlands', 'woodwork', 'wording', 'workbook', 'workdays', 'workshop',
+                'worrying', 'worships', 'worthful', 'wounding', 'wrapping', 'wrecking', 'wrestled', 'wriggled', 'wrinkled', 'writings',
+                'yearbook', 'yearning', 'yellowed', 'yielding', 'youngest', 'yourself', 'youthful', 'zeppelin', 'zigzaggy', 'zoologys'
             ]
         };
 
